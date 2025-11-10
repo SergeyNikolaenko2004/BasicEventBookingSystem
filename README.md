@@ -65,50 +65,53 @@ REST API для системы бронирования мест на мероп
 - pg - драйвер PostgreSQL для Node.js
 
 ## 📦 Установка и запуск
-Предварительные требования
 
 1. Клонирование репозитория
-bash
-git clone https://github.com/SergeyNikolaenko2004/BasicEventBookingSystem.git
-cd BasicEventBookingSystem
-2. Установка зависимостей
-bash
-npm install
+- git clone https://github.com/SergeyNikolaenko2004/BasicEventBookingSystem.git
+- cd BasicEventBookingSystem
+3. Установка зависимостей
+- npm install
 3. Настройка базы данных
 sql
--- Создание базы данных
+- Создание базы данных
+```SQL
 CREATE DATABASE event_booking;
-
--- Подключение к базе
+```
+- Подключение к базе
+```CMD
 \c event_booking
-
--- Создание таблицы мероприятий
+```
+- Создание таблицы мероприятий
+```SQL
 CREATE TABLE events (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     total_seats INTEGER NOT NULL
 );
-
--- Создание таблицы бронирований
+```
+- Создание таблицы бронирований
+```SQL
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
     event_id INTEGER REFERENCES events(id),
     user_id VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Добавление ограничения уникальности
+```
+- Добавление ограничения уникальности
+```SQL
 ALTER TABLE bookings ADD CONSTRAINT unique_event_user UNIQUE (event_id, user_id);
-
--- Тестовые данные
+```
+- Тестовые данные
+```SQL
 INSERT INTO events (name, total_seats) VALUES 
 ('Концерт рок-группы', 100),
 ('Театральная премьера', 50),
 ('Кинофестиваль', 200);
+```
 4. Настройка подключения к БД
 В файле src/config/database.js укажите данные для подключения:
 
-javascript
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -117,7 +120,7 @@ const pool = new Pool({
   port: 5432,
 });
 5. Запуск приложения
-bash
+
 # Development режим с автоматической перезагрузкой
 npm run dev
 
